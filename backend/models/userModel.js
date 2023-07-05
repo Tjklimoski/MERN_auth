@@ -21,7 +21,7 @@ const userSchema = mongoose.Schema(
 );
 
 userSchema.pre("save", async function (next) {
-  //the this keyword refers to the object sent when calling .create or .save
+  //the `this` keyword refers to the object we're sending to the DB
   if (!this.isModified("password")) {
     next();
   }
