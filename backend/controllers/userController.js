@@ -12,9 +12,35 @@ const authUser = asyncHandler(async (req, res) => {
 // route   POST /api/users
 // access  Public
 const registerUser = asyncHandler(async (req, res) => {
-  console.log(req.body);
+  const { name, email, password } = req.body;
 
-  res.status(200).json({ message: "Register User" });
+  const userExists = await User.findOne({ email });
+
+  if (userExists) {
+    res.status(400);
+    throw new Error("User already exists");
+  }
+
+  //password here is still plain text, we'll have bcrypt hash the password in userModel.js before it's sent to the db.
+  const user = await User.create({
+    name,
+    email,
+    password,
+  });
+
+  if (user) {
+    //send back the created user
+    //make sure to not send back the user's hashed password
+    //not sending the JWT here, we're storing that in the cookie
+    res.status(201).json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+    });
+  } else {
+    res.status(400);
+    throw new Error("Invalid User Data");
+  }
 });
 
 // desc    Logout user
