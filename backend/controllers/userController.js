@@ -1,5 +1,6 @@
 import asyncHandler from "express-async-handler";
 import User from "../models/userModel.js";
+import generateToken from "../utils/generateToken.js";
 
 // desc    Auth user and set token
 // route   POST /api/users/auth
@@ -29,6 +30,8 @@ const registerUser = asyncHandler(async (req, res) => {
   });
 
   if (user) {
+    //create JWT and set in cookie on res passed in as arg
+    generateToken(res, user._id);
     //send back the created user
     //make sure to not send back the user's hashed password
     //not sending the JWT here, we're storing that in the cookie
