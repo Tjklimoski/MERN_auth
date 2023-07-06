@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import FormContainer from "../components/FormContainer.jsx";
 import { useLoginMutation } from "../slices/usersApiSlice.js";
 import { setCredentials } from "../slices/authSlice.js";
+import { toast } from "react-toastify";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -30,7 +31,7 @@ export default function LoginPage() {
       dispatch(setCredentials({ ...res }));
       navigate("/");
     } catch (err) {
-      console.log(err?.data?.message || err?.error);
+      toast.error(err?.data?.message || err?.error);
     }
   };
 
