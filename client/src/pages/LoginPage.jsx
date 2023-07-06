@@ -24,7 +24,14 @@ export default function LoginPage() {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    console.log("Submit");
+    try {
+      // res is the returned user data from our api. (unwrap takes the returned promise from login() and returns the data from it)
+      const res = await login({ email, password }).unwrap();
+      dispatch(setCredentials({ ...res }));
+      navigate("/");
+    } catch (err) {
+      console.log(err?.data?.message || err?.error);
+    }
   };
 
   return (
