@@ -1,11 +1,26 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Form, Button, Row, Col } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
 import FormContainer from "../components/FormContainer.jsx";
+import { useLoginMutation } from "../slices/usersApiSlice.js";
+import { setCredentials } from "../slices/authSlice.js";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const [login, { isLoading }] = useLoginMutation();
+
+  const { userInfo } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    //a user is still logged in but went to login page, direct them to home screen.
+    if (userInfo) navigate("/");
+  }, [userInfo, navigate]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
