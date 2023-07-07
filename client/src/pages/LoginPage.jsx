@@ -6,6 +6,7 @@ import FormContainer from "../components/FormContainer.jsx";
 import { useLoginMutation } from "../slices/usersApiSlice.js";
 import { setCredentials } from "../slices/authSlice.js";
 import { toast } from "react-toastify";
+import Loader from "../components/Loader";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -57,9 +58,15 @@ export default function LoginPage() {
             onChange={(e) => setPassword(e.target.value)}
           ></Form.Control>
         </Form.Group>
-        <Button type="submit" variant="primary" className="mt-3">
-          Sign In
-        </Button>
+
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <Button type="submit" variant="primary" className="mt-3">
+            Sign In
+          </Button>
+        )}
+
         <Row className="py-3">
           <Col>
             New Customer? <Link to="/register">Sign up</Link>!
