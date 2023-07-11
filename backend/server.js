@@ -1,4 +1,5 @@
 import express from "express";
+import path from "path";
 import dotenv from "dotenv";
 import userRoutes from "./routes/userRoutes.js";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
@@ -17,9 +18,20 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use("/api/users", userRoutes);
 
-app.get("/", (req, res) => {
-  res.send("Home route");
-});
+if (process.env.NODE_ENV === "production") {
+  const __dirname = path.resolve();
+  console.log(__dirname);
+
+  app.use(express.static(path.join(__dirname, "client/dist")));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client/dist/index.html"));
+  });
+} else {
+  app.get("/", (req, res) => {
+    res.send("Server is ready");
+  });
+}
 
 // Error handler middleware must be placed at bottom of server to catch all errors
 app.use(notFound);
