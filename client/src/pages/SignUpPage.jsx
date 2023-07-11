@@ -29,6 +29,23 @@ export default function SignUpPage() {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+
+    if (password !== confirmPassword) {
+      return toast.error("Passwords do not match");
+    }
+
+    try {
+      const user = await register({
+        name,
+        email,
+        password,
+      }).unwrap();
+
+      dispatch(setCredentials(user));
+      navigate("/");
+    } catch (err) {
+      toast.error(err?.data?.message || err?.message);
+    }
   };
 
   return (
