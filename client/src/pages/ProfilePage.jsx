@@ -17,7 +17,7 @@ export default function ProfilePage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [updateUser, { isLoading }] = useUpdateUserMutation();
+  const [updateProfile, { isLoading }] = useUpdateUserMutation();
 
   const { userInfo } = useSelector((state) => state.auth);
 
@@ -79,9 +79,13 @@ export default function ProfilePage() {
           ></Form.Control>
         </Form.Group>
 
-        <Button type="submit" variant="primary" className="mt-3">
-          Update
-        </Button>
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <Button type="submit" variant="primary" className="mt-3">
+            Update
+          </Button>
+        )}
       </Form>
     </FormContainer>
   );
