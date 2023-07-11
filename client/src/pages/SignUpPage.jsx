@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import FormContainer from "../components/FormContainer.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { useRegisterMutation } from "../slices/usersApiSlice";
 import { setCredentials } from "../slices/authSlice";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Loader from "../components/Loader";
 
@@ -91,9 +90,15 @@ export default function SignUpPage() {
             onChange={(e) => setConfirmPassword(e.target.value)}
           ></Form.Control>
         </Form.Group>
-        <Button type="submit" variant="primary" className="mt-3">
-          Sign Up
-        </Button>
+
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <Button type="submit" variant="primary" className="mt-3">
+            Sign Up
+          </Button>
+        )}
+
         <Row className="py-3">
           <Col>
             Already have an account? <Link to="/login">Log in</Link>
