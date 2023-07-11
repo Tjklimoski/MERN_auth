@@ -32,7 +32,21 @@ export default function ProfilePage() {
     if (password !== confirmPassword) {
       return toast.error("Passwords do not match");
     }
-    console.log("Submit");
+    try {
+      const res = await updateProfile({
+        _id: userInfo._id,
+        // if any of the fields below here are not changed
+        // an empty string will be sent.
+        // the server will change that empty string back to the original value
+        name,
+        email,
+        password,
+      }).unwrap();
+      dispatch(setCredentials(res));
+      toast.success("Profile Updated!");
+    } catch (err) {
+      toast.error(err?.data?.message || err.error);
+    }
   };
 
   return (
