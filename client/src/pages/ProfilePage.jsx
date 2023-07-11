@@ -4,6 +4,7 @@ import { Form, Button } from "react-bootstrap";
 import FormContainer from "../components/FormContainer.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { setCredentials } from "../slices/authSlice";
+import { useUpdateUserMutation } from "../slices/usersApiSlice";
 import { toast } from "react-toastify";
 import Loader from "../components/Loader";
 
@@ -15,6 +16,8 @@ export default function ProfilePage() {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const [updateUser, { isLoading }] = useUpdateUserMutation();
 
   const { userInfo } = useSelector((state) => state.auth);
 
